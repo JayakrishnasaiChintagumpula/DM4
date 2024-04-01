@@ -62,10 +62,19 @@ def compute():
     """
 
     # Answer: NDArray
-    answers["3B: linkage"] = np.zeros(1)
+    data_points = mat_data['X']
+
+    # Perform hierarchical clustering using the "single" linkage method
+    Z = linkage(data_points, 'single')
+    
+    plt.figure(figsize=(25, 10))
+    dendo=dendrogram(
+        Z,
+        leaf_rotation=90.,  # rotates the x axis labels
+        leaf_font_size=8.,)  # font size for the x axis labels
 
     # Answer: the return value of the dendogram function, dicitonary
-    answers["3B: dendogram"] = {}
+    answers["3B: dendogram"] = dendo
 
     """
     C.	Consider the merger of the cluster corresponding to points with index sets {I={8,2,13}} J={1,9}}. At what iteration (starting from 0) were these clusters merged? That is, what row does the merger of A correspond to in the linkage matrix Z? The rows count from 0. 
