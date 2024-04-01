@@ -65,7 +65,8 @@ def compute():
     """
 
     # dct: return value from the make_blobs function in sklearn, expressed as a list of three numpy arrays
-    dct = answers["2A: blob"] = [np.zeros(0)]
+    X, y = make_blobs(center_box=(-20, 20), n_samples=20, centers=5, random_state=12)
+    dct = answers["2A: blob"] = [X, y]
 
     """
     B. Modify the fit_kmeans function to return the SSE (see Equations 8.1 and 8.2 in the book).
@@ -80,17 +81,48 @@ def compute():
 
     # dct value: a list of tuples, e.g., [[0, 100.], [1, 200.]]
     # Each tuple is a (k, SSE) pair
-    dct = answers["2C: SSE plot"] = [[0.0, 100.0]]
+    sse_values = []
+    for k in range(1, 9):
+        sse = fit_kmeans(X, k)
+        sse_values.append(sse)
+
+    # Plotting the SSE values to determine the elbow
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(1, 9), sse_values, marker='o')
+    plt.title('Elbow Method for Determining Optimal k')
+    plt.xlabel('Number of clusters (k)')
+    plt.ylabel('Sum of Squared Errors (SSE)')
+    plt.xticks(range(1, 9))
+    plt.grid(True)
+    plt.show()
+
+    return sse_values
+    print(sse_values)
+    dct = answers["2C: SSE plot"] = sse_values
 
     """
     D.	Repeat part 2.C for inertia (note this is an attribute in the kmeans estimator called _inertia). Do the optimal k’s agree?
     """
 
     # dct value has the same structure as in 2C
-    dct = answers["2D: inertia plot"] = [[0.0, 100.0]]
+    inertia_values = []
+    for k in range(1, 9):
+        inertia = fit_kmeans_and_get_inertia(X, k)
+        inertia_values.append(inertia)
+
+    # Plotting the inertia values to determine the elbow
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(1, 9), inertia_values, marker='o', color='red')
+    plt.title('Elbow Method for Determining Optimal k using Inertia')
+    plt.xlabel('Number of clusters (k)')
+    plt.ylabel('Inertia')
+    plt.xticks(range(1, 9))
+    plt.grid(True)
+    plt.show()
+    dct = answers["2D: inertia plot"] = inertia_values
 
     # dct value should be a string, e.g., "yes" or "no"
-    dct = answers["2D: do ks agree?"] = ""
+    dct = answers["2D: do ks agree?"] = "yes"
 
     return answers
 
