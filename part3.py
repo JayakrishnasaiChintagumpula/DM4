@@ -9,7 +9,7 @@ from sklearn.preprocessing import StandardScaler
 from itertools import cycle, islice
 import scipy.io as io
 from scipy.cluster.hierarchy import dendrogram, linkage#
-from scipy.distance import pdist
+from scipy.spatial.distance import pdist
 
 # import plotly.figure_factory as ff
 import math
