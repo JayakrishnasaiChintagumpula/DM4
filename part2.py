@@ -81,8 +81,10 @@ def compute():
     X, y = make_blobs(center_box=(-20, 20), n_samples=20, centers=5, random_state=12)
 
     # Create an additional array, for example, a unique identifier for each sample
-    sample_ids = np.arange(1, len(X) + 1)
-    dct = answers["2A: blob"] = [X, y,sample_ids]
+    x,label = make_blobs(center_box=(-20, 20), n_samples=20, centers=5, random_state=12)
+    array_1 = x[0:,0:2]
+    array_2 = x[0:,1:]
+    dct = answers["2A: blob"] = [array_1, array_2,label]
 
     """
     B. Modify the fit_kmeans function to return the SSE (see Equations 8.1 and 8.2 in the book).
@@ -97,7 +99,7 @@ def compute():
 
     # dct value: a list of tuples, e.g., [[0, 100.], [1, 200.]]
     # Each tuple is a (k, SSE) pair
-    _, sse_values, _, _ = fit_kmeans(X, 8)
+    sse_values= fit_kmeans(X, 8)[1]
 
     # Plotting the manually calculated SSE as a function of k
     plt.figure(figsize=(10, 6))
@@ -118,7 +120,7 @@ def compute():
     """
 
     # dct value has the same structure as in 2C
-    _, _, model_sse_inertia, _ = fit_kmeans(X, 8)
+    model_sse_inertia = fit_kmeans(X, 8)[0]
 
     # Extracting the inertia values for plotting
     inertia_values = list(model_sse_inertia.values())
