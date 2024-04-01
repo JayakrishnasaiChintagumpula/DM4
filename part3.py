@@ -169,7 +169,7 @@ def compute():
     """
 
     # Answer type: string. Insert your explanation as a string.
-    answers["3F: rich get richer"] = "True, The analysis indicates that the "rich get richer" phenomenon is observed in the hierarchical clustering process for this dataset. This conclusion is based on the observation that some clusters grow significantly larger than the average cluster size, especially towards the later stages of the clustering process. The sizes of the last few clusters formed demonstrate a continuous increase, which is characteristic of the "rich get richer" phenomenon"
+    answers["3F: rich get richer"] = ""
 
     return answers
 
