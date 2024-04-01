@@ -12,6 +12,7 @@ import warnings
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import cluster, datasets, mixture
+from sklearn.clusters import KMeans
 from sklearn.datasets import make_blobs
 from sklearn.neighbors import kneighbors_graph
 from sklearn.preprocessing import StandardScaler
