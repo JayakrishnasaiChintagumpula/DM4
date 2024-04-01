@@ -74,6 +74,7 @@ def compute():
         leaf_font_size=8.,)  # font size for the x axis labels
 
     # Answer: the return value of the dendogram function, dicitonary
+    answers["3B: linkage"] = Z
     answers["3B: dendogram"] = dendo
 
     """
