@@ -127,7 +127,42 @@ def compute():
     """
 
     # List the clusters. the [{0,1,2}, {3,4}, {5}, {6}, ...] represents a list of lists.
-    answers["3E: clusters"] = [{0, 0}, {0, 0}]
+    clusters = {i: {i} for i in range(len(data_points))}
+
+    # Initialize a mapping to track the latest cluster ID for each data point.
+    latest_cluster_id = len(data_points)
+
+    for i in range(iteration_found + 1):
+        row = Z[i]
+        idx1, idx2 = int(row[0]), int(row[1])
+        
+        # For each index, find the actual data points belonging to the clusters being merged.
+        points1 = clusters.get(idx1, None)
+        points2 = clusters.get(idx2, None)
+        
+        if points1 is None or points2 is None:
+            # If either cluster is missing, it indicates a merge with a newly formed cluster.
+            for cluster_id, points in clusters.items():
+                if idx1 in points:
+                    points1 = points
+                if idx2 in points:
+                    points2 = points
+                if points1 is not None and points2 is not None:
+                    break
+        
+        # Merge the two clusters and update the clusters dictionary with the new cluster.
+        new_cluster = points1.union(points2)
+        clusters[latest_cluster_id] = new_cluster
+        
+        # Increment the latest_cluster_id for the next new cluster.
+        latest_cluster_id += 1
+
+    # Now, clusters dictionary contains all the clusters formed up to the iteration,
+    # including the original and newly formed clusters.
+    # Extract the clusters present at the specified iteration.
+    clusters_present_at_iteration = [list(cluster) for cluster_id, cluster in clusters.items() if cluster_id >= len(data_points) or cluster_id <= iteration_found]
+    print(clusters_present_at_iteration)
+    answers["3E: clusters"] = cluster_present_at_iteration
 
     """
     F.	Single linked clustering is often criticized as producing clusters where “the rich get richer”, that is, where one cluster is continuously merging with all available points. Does your dendrogram illustrate this phenomenon?
