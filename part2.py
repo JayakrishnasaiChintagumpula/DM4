@@ -36,8 +36,23 @@ In this task you will explore different methods to find a good value for k
 # Change the arguments and return according to 
 # the question asked. 
 
-def fit_kmeans():
-    return None
+def fit_kmeans(X, n_clusters):
+    """
+    Fits a k-means clustering algorithm to the data X and explicitly calculates the SSE.
+    """
+    kmeans = KMeans(n_clusters=n_clusters, random_state=12)
+    kmeans.fit(X)
+    labels = kmeans.labels_
+    centroids = kmeans.cluster_centers_
+    
+    # Explicit calculation of SSE
+    sse = 0
+    for i in range(n_clusters):
+        cluster_points = X[labels == i]
+        for point in cluster_points:
+            sse += np.sum((point - centroids[i]) ** 2)
+    return sse
+
 
 
 
