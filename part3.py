@@ -8,7 +8,8 @@ from sklearn.neighbors import kneighbors_graph
 from sklearn.preprocessing import StandardScaler
 from itertools import cycle, islice
 import scipy.io as io
-from scipy.cluster.hierarchy import dendrogram, linkage  #
+from scipy.cluster.hierarchy import dendrogram, linkage#
+from scipy.distance import pdist
 
 # import plotly.figure_factory as ff
 import math
@@ -82,7 +83,37 @@ def compute():
     """
 
     # Answer type: integer
-    answers["3C: iteration"] = -1
+    cluster_I = [8, 2, 13]
+    cluster_J = [1, 9]
+
+    # Combine indices from clusters I and J
+    combined_indices = cluster_I + cluster_J
+
+    # Extract the combined data points
+    combined_data_points = data_points[combined_indices, :]
+
+    # Calculate the Euclidean distance matrix for the combined data points
+    distance_matrix_combined = pdist(combined_data_points, metric='euclidean')
+
+    # Perform hierarchical clustering with the single linkage method on the combined distance matrix
+    Z_combined = linkage(distance_matrix_combined, method='single')
+
+    # Extract dissimilarities from the linkage matrix for combined clusters I and J
+    dissimilarities_combined = Z_combined[:, 2]
+
+    # The final merge dissimilarity among the combined clusters I and J
+    final_merge_dissimilarity = dissimilarities_combined[-1]
+
+    # Find the iteration in the full dataset's linkage matrix Z where this dissimilarity occurs
+    iteration_found = None
+    for i, row in enumerate(Z):
+        if np.isclose(row[2], final_merge_dissimilarity, atol=1e-04):
+            iteration_found = i
+            break
+
+    # Output the iteration where clusters I and J would have their final merge in the full dataset context
+    print(iteration_found)
+    answers["3C: iteration"] = iteration_found
 
     """
     D.	Write a function that takes the data and the two index sets {I,J} above, and returns the dissimilarity given by single link clustering using the Euclidian distance metric. The function should output the same value as the 3rd column of the row found in problem 2.C.
